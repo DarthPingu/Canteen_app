@@ -7,24 +7,24 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _username = '';
-  String _password = '';
+  String _username = 'a';
+  String _password = 'a';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username',
                 ),
                 validator: (value) {
@@ -37,10 +37,10 @@ class _LoginPageState extends State<LoginPage> {
                   _username = value!;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                 ),
                 validator: (value) {
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   _password = value!;
                 },
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   }
                 },
-                child: Text('Login'),
+                child: const Text('Login'),
               ),
             ],
           ),
@@ -102,25 +102,32 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   List<FoodItem> _foodItems = [
     FoodItem(
-      name: 'Burger',
-      price: 9.99,
-      description: 'Delicious burger with juicy patty',
+      name: 'Meal-Deal Burger',
+      price: 2.70,
+      description: 'Delicious cheeseburger with juicy patty, comes with chips!',
       imagePath:
-          'assets/images/burger.jpg', // Replace with actual image path or URL
+          'https://c8.alamy.com/comp/B8RAGM/cheeseburger-isolated-on-a-white-studio-background-B8RAGM.jpg', // Replace with actual image path or URL
     ),
     FoodItem(
-      name: 'Pizza',
-      price: 12.99,
-      description: 'Cheesy pizza with various toppings',
+      name: 'Meal-Deal Pizza',
+      price: 2.70,
+      description: 'Cheesy pizza with pepperoni or just cheese and fries',
       imagePath:
-          './assets/images/pizza.jpg', // Replace with actual image path or URL
+          'https://images-gmi-pmc.edge-generalmills.com/2a88c35a-1c88-470b-bc52-ea014206bd46.jpg', // Replace with actual image path or URL
     ),
     FoodItem(
-      name: 'Salad',
-      price: 6.99,
-      description: 'Fresh and healthy salad',
+      name: 'Main meat',
+      price: 3.50,
+      description: 'Chicken curry',
       imagePath:
-          'assets/images/salad.jpg', // Replace with actual image path or URL
+          'https://hips.hearstapps.com/del.h-cdn.co/assets/17/31/1501791674-delish-chicken-curry-horizontal.jpg?crop=0.665xw:0.998xh;0.139xw,0.00240xh&resize=1200:*', // Replace with actual image path or URL
+    ),
+    FoodItem(
+      name: 'Dessert',
+      price: 1.90,
+      description: 'Sweet and rich brownie',
+      imagePath:
+      'https://www.inspiredtaste.net/wp-content/uploads/2022/05/Chewy-Brownie-Recipe-3-1200.jpg', // Replace with actual image path or URL
     ),
   ];
 
@@ -128,46 +135,51 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    var _scrollController;
     return Scaffold(
       appBar: AppBar(
         title: Text('Menu'),
       ),
-      body: ListView.builder(
-        itemCount: _foodItems.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Image.network(
-              _foodItems[index].imagePath,
-              width: 80,
-              height: 80,
-            ),
-            title: Text(_foodItems[index].name),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_foodItems[index].description),
-                Text(
-                  '\$${_foodItems[index].price.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+      body: Scrollbar(
+        controller: _scrollController,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: _foodItems.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Image.network(
+                _foodItems[index].imagePath,
+                width: 80,
+                height: 80,
+              ),
+              title: Text(_foodItems[index].name),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(_foodItems[index].description),
+                  Text(
+                    '\$${_foodItems[index].price.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            trailing: Checkbox(
-              value: _selectedItems.contains(_foodItems[index]),
-              onChanged: (value) {
-                setState(() {
-                  if (value == true) {
-                    _selectedItems.add(_foodItems[index]);
-                  } else {
-                    _selectedItems.remove(_foodItems[index]);
-                  }
-                });
-              },
-            ),
-          );
-        },
+                ],
+              ),
+              trailing: Checkbox(
+                value: _selectedItems.contains(_foodItems[index]),
+                onChanged: (value) {
+                  setState(() {
+                    if (value == true) {
+                      _selectedItems.add(_foodItems[index]);
+                    } else {
+                      _selectedItems.remove(_foodItems[index]);
+                    }
+                  });
+                },
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -193,7 +205,7 @@ class SummaryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Summary'),
+        title: const Text('Order Summary'),
       ),
       body: ListView.builder(
         itemCount: orderList.length,
@@ -204,6 +216,15 @@ class SummaryPage extends StatelessWidget {
             trailing: Text('\$${orderList[index].price.toStringAsFixed(2)}'),
           );
         },
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton(
+          onPressed: () {
+            // TODO: Implement checkout logic
+          },
+          child: const Text('Checkout'),
+        ),
       ),
     );
   }
